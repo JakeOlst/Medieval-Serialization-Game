@@ -1,8 +1,10 @@
 import java.util.Scanner;
 import java.util.Objects;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class MedievalGame {
 
@@ -43,17 +45,16 @@ public class MedievalGame {
 
     game.addDelay(500);
     System.out.println(game.player);
-  } // End of main
+  }
 
   /* Instance Methods */
   private Player start(Scanner console) {
     // Add start functionality here
 
     return new Player("Test");
-  } // End of start
+  }
 
   private void save() {
-    // Add save functionality here
     String fileName = player.getName() + ".svr";
 
     try {
@@ -66,13 +67,27 @@ public class MedievalGame {
       e.printStackTrace();
     }
 
-  } // End of save
+  }
 
   private Player load(String playerName, Scanner console) {
     // Add load functionality here
+    Player loadedPlayer;
+    String fileName = playerName + ".svr";
+    try {
+      FileInputStream userLoadFile = new FileInputStream(fileName);
+      ObjectInputStream playerLoader = new ObjectInputStream(userLoadFile);
 
-    return new Player("Test");
-  } // End of load
+      loadedPlayer = (Player) playerLoader.readObject();
+
+    } catch (IOException | ClassNotFoundException e) {
+      addDelay(1500);
+      System.out.println(
+          "There was a problem loading your saved character. We will create a new character with the same name.");
+      addDelay(2000);
+      loadedPlayer = new Player(playerName);
+    }
+    return loadedPlayer;
+  }
 
   // Adds a delay to the console so it seems like the computer is "thinking"
   // or "responding" like a human, not instantly like a computer.
