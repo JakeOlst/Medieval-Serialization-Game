@@ -8,7 +8,7 @@ public class Weapon implements Serializable {
   /* Instance Variables */
   private final String name;
   private final int damage;
-
+  
   /* Constructors */
   public Weapon(String name, int damage) {
     this.name = name;

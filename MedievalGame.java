@@ -1,10 +1,10 @@
 import java.util.Scanner;
 import java.util.Objects;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.io.IOException;
 
 public class MedievalGame {
 
@@ -13,7 +13,7 @@ public class MedievalGame {
 
   /* Main Method */
   public static void main(String[] args) {
-
+    
     Scanner console = new Scanner(System.in);
     MedievalGame game = new MedievalGame();
 
@@ -45,29 +45,65 @@ public class MedievalGame {
 
     game.addDelay(500);
     System.out.println(game.player);
-  }
+  } // End of main
 
   /* Instance Methods */
   private Player start(Scanner console) {
     // Add start functionality here
+    Player player;
 
-    return new Player("Test");
-  }
+    Art.homeScreen();
+
+    System.out.println("Welcome to the game, adventurer!");
+    System.out.println("Are you new around here?");
+    System.out.print("Enter 'y' to Load a game, or 'n' to create a new game: ");
+
+    String answer = console.next().toLowerCase();
+
+    while (true) {
+      if (answer.equals("y")) {
+        System.out.print("Welcome back! Please remind me... What was your name?: ");
+        player = load(console.next(), console);
+        break;
+      } else if (answer.equals("n")) {
+        System.out.print("Welcome - it's great to have you here! Now... what is your name?: ");
+        String potentialName = console.next();
+        while (true) {
+          System.out.print("Just to confirm my pronounciation, your name is "+potentialName+"?: ");
+          String nameConfirmation = console.next().toLowerCase();
+          if (nameConfirmation.equals("y")) {
+            break;
+          }
+          System.out.println("So sorry, can you spell it for me again?");
+          potentialName = console.next();
+          player = new Player(potentialName);
+        }
+        player = new Player(console.next());
+        break;
+      } else {
+        System.out.println("Sorry, I do not understand... Are you new around here?");
+        System.out.print("Enter 'y' to Load a game, or 'n' to create a new game: ");
+        answer = console.next().toLowerCase();
+      }
+    }
+    return player;
+  } // End of start
 
   private void save() {
+    // Add save functionality here
     String fileName = player.getName() + ".svr";
-
+    
     try {
       FileOutputStream userSaveFile = new FileOutputStream(fileName);
       ObjectOutputStream playerSaver = new ObjectOutputStream(userSaveFile);
-
+      
       playerSaver.writeObject(this.player);
     } catch (IOException e) {
       System.out.println("Error - Unable to save the game.");
       e.printStackTrace();
     }
 
-  }
+  } // End of save
 
   private Player load(String playerName, Scanner console) {
     // Add load functionality here
@@ -79,15 +115,14 @@ public class MedievalGame {
 
       loadedPlayer = (Player) playerLoader.readObject();
 
-    } catch (IOException | ClassNotFoundException e) {
+    } catch(IOException | ClassNotFoundException e) {
       addDelay(1500);
-      System.out.println(
-          "There was a problem loading your saved character. We will create a new character with the same name.");
+      System.out.println("There was a problem loading your saved character. We will create a new character with the same name.");
       addDelay(2000);
       loadedPlayer = new Player(playerName);
     }
     return loadedPlayer;
-  }
+  } 
 
   // Adds a delay to the console so it seems like the computer is "thinking"
   // or "responding" like a human, not instantly like a computer.

@@ -21,8 +21,7 @@ public class Armour implements Serializable {
   public void reduceDurability(int reduction) {
     durability -= reduction;
     if (durability <= 0) {
-      System.out
-          .println("Your " + name + " has been rendered useless. It cannot be repaired and must be sold for scraps.");
+      System.out.println("Your " + name + " has been rendered useless. It cannot be repaired and must be sold for scraps.");
       defenseRating = 0;
     }
   }
@@ -33,12 +32,12 @@ public class Armour implements Serializable {
       durability = 100;
     }
   }
-
+  
   /* Getters & Setters */
   public int getDefenseRating() {
-    return (int) (defenseRating * (durability / 100.0));
+    return (int) (defenseRating * (durability / 100.0)) ;
   }
-
+  
   @Override
   public String toString() {
     return name + ", Defense Rating: " + defenseRating + "\n";
