@@ -1,9 +1,13 @@
 import java.util.Scanner;
 import java.util.Objects;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
 
 public class MedievalGame {
 
   /* Instance Variables */
+  private Player player;
 
   /* Main Method */
   public static void main(String[] args) {
@@ -50,6 +54,17 @@ public class MedievalGame {
 
   private void save() {
     // Add save functionality here
+    String fileName = player.getName() + ".svr";
+
+    try {
+      FileOutputStream userSaveFile = new FileOutputStream(fileName);
+      ObjectOutputStream playerSaver = new ObjectOutputStream(userSaveFile);
+
+      playerSaver.writeObject(this.player);
+    } catch (IOException e) {
+      System.out.println("Error - Unable to save the game.");
+      e.printStackTrace();
+    }
 
   } // End of save
 
